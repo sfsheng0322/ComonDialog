@@ -57,6 +57,6 @@ public class CommonGroupAdapter extends GroupRecyclerViewAdapter<String> {
 
     @Override
     public void onBindFooterViewHolder(GroupViewHolder holder, String item, int groupPosition) {
-
+        holder.setText(R.id.tv_footer_title, "");
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,13 +13,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private CommonGroupAdapter groupAdapter;
 
     private String[][] items = {
-            {"第一组", "1", "2", "3"}, // 0~3
-            {"第二组", "1", "2"}, // 4~6
-            {"第三组", "1", "2", "3", "4", "5"}, // 7~12
-            {"第四组", "1", "2", "3", "4"}, // 13~17
-            {"第五组", "1"} // 18~19
+            {"第一组", "1", "2", "3"},
+            {"第二组", "1", "2"},
+            {"第三组", "1", "2", "3", "4", "5"},
+            {"第四组", "1", "2", "3", "4"},
+            {"第五组", "1", "2"}
     };
 
     @Override
@@ -35,9 +37,24 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CommonGroupAdapter adapter = new CommonGroupAdapter(this, lists);
-        recyclerView.setAdapter(adapter);
-        adapter.setItems(lists);
+        groupAdapter = new CommonGroupAdapter(this, lists);
+        recyclerView.setAdapter(groupAdapter);
+
+        groupAdapter.setOnHeaderClickListener((adapter, holder, groupPosition) -> {
+            toast(groupAdapter.getHeaderItem(groupPosition));
+        });
+
+        groupAdapter.setOnChildClickListener((adapter, holder, groupPosition, childPosition) -> {
+            toast(groupAdapter.getChildItem(groupPosition, childPosition));
+        });
+
+        groupAdapter.setOnFooterClickListener((adapter, holder, groupPosition) -> {
+            toast(groupAdapter.getFooterItem(groupPosition));
+        });
+    }
+
+    private void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
 }
