@@ -1,5 +1,6 @@
 package com.sunfusheng.dialog.datasource;
 
+import com.sunfusheng.dialog.PopupMenuActivity;
 import com.sunfusheng.dialog.R;
 
 /**
@@ -11,7 +12,7 @@ public class DataSource {
         NULL(0, null),
         COMMON_DIALOG(R.string.common_dialog, null),
         BOTTOM_SHEET(R.string.bottom_sheet, null),
-        POPUP_MENU(R.string.popup_menu, null);
+        POPUP_MENU(R.string.popup_menu, PopupMenuActivity.class);
 
         public int titleId;
         public Class<?> intentClass;
