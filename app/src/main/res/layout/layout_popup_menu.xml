@@ -8,7 +8,7 @@
     android:background="@drawable/bg_popup_menu"
     android:paddingBottom="5dp"
     android:paddingLeft="9dp"
-    android:paddingRight="9dp"
+    android:paddingRight="0dp"
     android:paddingTop="5dp">
 
     <android.support.v7.widget.RecyclerView
@@ -16,13 +16,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1px"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/recyclerView"
+        android:layout_alignTop="@+id/recyclerView"
+        android:layout_toRightOf="@+id/recyclerView"
+        android:alpha="0.1"
+        android:background="@color/white"/>
+
+    <LinearLayout
+        android:id="@+id/ll_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/divider"
+        android:orientation="vertical"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="9dp"
+            android:layout_marginRight="9dp"
+            android:src="@mipmap/ic_popup_menu_more"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="更多"
+            android:textColor="@color/white"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/close"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/recyclerView"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_toRightOf="@+id/divider"
         android:src="@mipmap/ic_popup_menu_close"
         android:visibility="gone"
         tools:visibility="visible"/>

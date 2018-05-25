@@ -33,6 +33,7 @@ public class StringGroupAdapter extends HeaderGroupRecyclerViewAdapter<String> {
     @Override
     public void onBindChildViewHolder(GroupViewHolder holder, String item, int groupPosition, int childPosition) {
         holder.setText(R.id.tv_title, item);
+        holder.setTextColor(R.id.tv_title, context.getResources().getColor(R.color.font2));
         holder.setVisible(R.id.divider, !isGroupLastItem(groupPosition, childPosition));
     }
 }

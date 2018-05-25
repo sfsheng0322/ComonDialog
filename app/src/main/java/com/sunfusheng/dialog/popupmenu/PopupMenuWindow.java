@@ -157,10 +157,16 @@ public class PopupMenuWindow extends PopupWindow {
         int pointY = point.y;
         int topMargin = frame.top + pointY;
 
-        offX = pointX;
+        if (screenWidth - pointX - contentWidth - MARGIN > 0) {
+            offX = Math.max(pointX, MARGIN);
+        } else if (pointX - contentWidth - 2 * MARGIN > 0) {
+            offX = pointX - contentWidth - MARGIN;
+        } else {
+            offX = (screenWidth - contentWidth) / 2;
+        }
 
-        if (screenHeight - topMargin - contentHeight - MARGIN < 0) {
-            offY = topMargin - y - anchorHeight - contentHeight;
+        if (topMargin > screenHeight * 2 / 3 || screenHeight - topMargin - contentHeight - 2 * MARGIN < 0) {
+            offY = topMargin - y - anchorHeight - contentHeight - MARGIN;
         } else {
             offY = topMargin - y - anchorHeight;
         }

@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.sunfusheng.dialog.R;
@@ -19,6 +20,8 @@ public class PopupMenu extends PopupMenuWindow {
 
     private View vView;
     private RecyclerView vRecyclerView;
+    private LinearLayout vMore;
+    private View vDivider;
     private ImageView vClose;
 
     private static int THRESHOLD = 4;
@@ -45,19 +48,20 @@ public class PopupMenu extends PopupMenuWindow {
         vRecyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener((view, item, position) -> {
-            if (item == moreItem) {
-                showMore = false;
-                vClose.setVisibility(View.VISIBLE);
-                gridLayoutManager.setSpanCount(getSpanCount());
-                adapter.setItems(handlePopupMenuItems(showMore));
-            } else {
-                Toast.makeText(view.getContext(), item.title, Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(view.getContext(), item.title, Toast.LENGTH_SHORT).show();
         });
-
+        vMore = vView.findViewById(R.id.ll_more);
+        vDivider = vView.findViewById(R.id.divider);
         vClose = vView.findViewById(R.id.close);
-        vClose.setVisibility(View.GONE);
+
+        vMore.setOnClickListener(v -> {
+            showMore = false;
+            vMore.setVisibility(View.GONE);
+            vClose.setVisibility(View.VISIBLE);
+            adapter.setItems(handlePopupMenuItems(showMore));
+        });
         vClose.setOnClickListener(v -> dismiss());
+        setItems(items);
     }
 
     public void setThreshold(int threshold) {
@@ -72,6 +76,8 @@ public class PopupMenu extends PopupMenuWindow {
         this.items = items;
         this.itemsCount = items.size();
         this.showMore = itemsCount > THRESHOLD;
+        vMore.setVisibility(showMore ? View.VISIBLE : View.GONE);
+        vDivider.setVisibility(itemsCount > THRESHOLD ? View.VISIBLE : View.GONE);
         vClose.setVisibility(View.GONE);
 
         gridLayoutManager = new GridLayoutManager(context, getSpanCount());
@@ -84,7 +90,7 @@ public class PopupMenu extends PopupMenuWindow {
     }
 
     private int getSpanCount() {
-        return Math.min(showMore && moreItem != null ? (THRESHOLD + 1) : THRESHOLD, itemsCount);
+        return showMore ? THRESHOLD : itemsCount;
     }
 
     private List<PopupMenuItem> handlePopupMenuItems(boolean showMore) {
@@ -92,10 +98,6 @@ public class PopupMenu extends PopupMenuWindow {
             List<PopupMenuItem> result = new ArrayList<>();
             for (int i = 0; i < THRESHOLD; i++) {
                 result.add(items.get(i));
-            }
-
-            if (itemsCount > THRESHOLD) {
-                result.add(moreItem);
             }
             return result;
         }

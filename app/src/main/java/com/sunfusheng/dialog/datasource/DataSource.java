@@ -34,10 +34,10 @@ public class DataSource {
     };
 
     public static String[][] popupMenuItems = {
-            {null, "1. long click me!", "2. long click me!", "3. long click me!"},
-            {null, "4. long click me!", "5. long click me!", "6. long click me!"},
-            {null, "7. long click me!", "8. long click me!", "9. long click me!"},
-            {null, "10. long click me!", "11. long click me!", "12. long click me!"},
-            {null, "13. long click me!", "14. long click me!", "15. long click me!"}
+            {null, "1. long click me anywhere !", "2. long click me anywhere !", "3. long click me anywhere !"},
+            {null, "4. long click me anywhere !", "5. long click me anywhere !", "6. long click me anywhere !"},
+            {null, "7. long click me anywhere !", "8. long click me anywhere !", "9. long click me anywhere !"},
+            {null, "10. long click me anywhere !", "11. long click me anywhere !", "12. long click me anywhere !"},
+            {null, "13. long click me anywhere !", "14. long click me anywhere !", "15. long click me anywhere !"}
     };
 }
