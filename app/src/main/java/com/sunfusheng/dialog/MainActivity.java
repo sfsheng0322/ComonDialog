@@ -11,17 +11,14 @@ import com.sunfusheng.dialog.datasource.DataSource;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private MainGroupAdapter mainAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mainAdapter = new MainGroupAdapter(this, DataSource.mainItems);
+        MainGroupAdapter mainAdapter = new MainGroupAdapter(this, DataSource.mainItems);
         recyclerView.setAdapter(mainAdapter);
 
         mainAdapter.setOnItemClickListener((adapter, data, groupPosition, childPosition) -> {

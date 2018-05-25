@@ -1,21 +1,18 @@
 package com.sunfusheng.dialog;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
+import com.sunfusheng.GroupAdapterUtils;
+import com.sunfusheng.GroupRecyclerViewAdapter;
+import com.sunfusheng.dialog.adapter.StringGroupAdapter;
+import com.sunfusheng.dialog.datasource.DataSource;
+import com.sunfusheng.dialog.popupmenu.PopupMenu;
 import com.sunfusheng.dialog.popupmenu.PopupMenuItem;
 
 import java.util.ArrayList;
@@ -26,8 +23,9 @@ import java.util.List;
  */
 public class PopupMenuActivity extends AppCompatActivity {
 
-    private TextView textView;
+    private PopupMenu popupMenu;
     private List<PopupMenuItem> items = new ArrayList<>();
+    private PopupMenuItem moreItem = new PopupMenuItem("更多", R.mipmap.ic_popup_menu_more);
 
     private List<PopupMenuItem> getItems() {
         List<PopupMenuItem> items = new ArrayList<>();
@@ -48,7 +46,7 @@ public class PopupMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_popup_menu);
+        setContentView(R.layout.activity_main);
 
         initData();
         initView();
@@ -60,68 +58,40 @@ public class PopupMenuActivity extends AppCompatActivity {
 
     private void initView() {
         setTitle(R.string.popup_menu);
-        textView = findViewById(R.id.textView);
-        textView.setOnClickListener(v -> {
-            showPopupWindow(textView, items);
+
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        StringGroupAdapter groupAdapter = new StringGroupAdapter(this, DataSource.popupMenuItems);
+        recyclerView.setAdapter(groupAdapter);
+
+        groupAdapter.setOnItemLongClickListener((adapter, data, groupPosition, childPosition) -> {
+            if (null != data) {
+                int position = getPosition(adapter, groupPosition, childPosition);
+                View itemView = linearLayoutManager.findViewByPosition(position);
+                showPopupMenu(recyclerView, itemView, items);
+            }
         });
     }
 
-    private void showPopupWindow(View anchorView, List<PopupMenuItem> items) {
-        Context context = anchorView.getContext();
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.layout_popup_menu, null);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        setItems(recyclerView, items);
-
-        PopupWindow popupWindow = new PopupWindow(view, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(anchorView, Gravity.CENTER, -0, -200);
+    private int getPosition(GroupRecyclerViewAdapter adapter, int groupPosition, int childPosition) {
+        int position = 0;
+        for (int i = 0; i < groupPosition; i++) {
+            position += GroupAdapterUtils.countGroupItems(adapter.getGroups(), groupPosition);
+        }
+        position += childPosition;
+        return position;
     }
 
-    private void setItems(RecyclerView recyclerView, List<PopupMenuItem> items) {
-        recyclerView.setLayoutManager(new GridLayoutManager(recyclerView.getContext(), 4));
-        recyclerView.setAdapter(new PopupMenuAdapter(recyclerView.getContext(), items));
-    }
-
-    static class PopupMenuAdapter extends RecyclerView.Adapter<PopupMenuAdapter.ViewHolder> {
-
-        private LayoutInflater layoutInflater;
-        private List<PopupMenuItem> items;
-
-        public PopupMenuAdapter(Context context, List<PopupMenuItem> items) {
-            this.layoutInflater = LayoutInflater.from(context);
-            this.items = items;
+    private void showPopupMenu(View frameView, View anchorView, List<PopupMenuItem> items) {
+        if (popupMenu == null) {
+            popupMenu = new PopupMenu(this);
+            popupMenu.setFrameView(frameView);
         }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(layoutInflater.inflate(R.layout.item_popup_menu, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            PopupMenuItem item = items.get(position);
-
-            holder.vTitle.setText(item.title);
-            holder.vIcon.setImageResource(item.icon);
-        }
-
-        @Override
-        public int getItemCount() {
-            return items == null ? 0 : items.size();
-        }
-
-        static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView vTitle;
-            ImageView vIcon;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                vTitle = itemView.findViewById(R.id.title);
-                vIcon = itemView.findViewById(R.id.icon);
-            }
-        }
+//        popupMenu.setMoreItem(moreItem);
+        popupMenu.setItems(items);
+        popupMenu.show(anchorView);
     }
 
 }
