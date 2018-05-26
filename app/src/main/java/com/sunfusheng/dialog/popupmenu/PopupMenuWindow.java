@@ -1,16 +1,12 @@
 package com.sunfusheng.dialog.popupmenu;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -24,9 +20,6 @@ public class PopupMenuWindow extends PopupWindow {
 
     protected Context context;
     protected LayoutInflater inflater;
-    protected View frameView;
-    private GestureDetector gestureDetector;
-    private Point touchPoint;
 
     private static int MARGIN;
     private int screenWidth;
@@ -41,38 +34,12 @@ public class PopupMenuWindow extends PopupWindow {
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setFocusable(true);
         setOutsideTouchable(true);
-        gestureDetector = new GestureDetector(context, simpleOnGestureListener);
+
 
         MARGIN = DisplayUtil.dp2px(context, 16);
         screenWidth = DisplayUtil.getScreenWidth(context);
         screenHeight = DisplayUtil.getScreenHeight(context);
     }
-
-    @SuppressLint("ClickableViewAccessibility")
-    public void setFrameView(View frameView) {
-        if (frameView == null) return;
-        this.frameView = frameView;
-        if (frameView instanceof RecyclerView) {
-            RecyclerView recyclerView = (RecyclerView) frameView;
-            recyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
-                @Override
-                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                    return gestureDetector.onTouchEvent(e);
-                }
-            });
-        } else {
-            frameView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
-        }
-    }
-
-    private GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        public boolean onDown(MotionEvent e) {
-            touchPoint = new Point((int) e.getX(), (int) e.getY());
-            Log.d("--->", "touchPoint:" + touchPoint.toString());
-            return super.onDown(e);
-        }
-    };
 
     public int getContentWidth() {
         return getContentView().getMeasuredWidth();
@@ -82,28 +49,13 @@ public class PopupMenuWindow extends PopupWindow {
         return getContentView().getMeasuredHeight();
     }
 
-    public void show(View anchor) {
-        Rect frame = new Rect();
-        if (frameView != null) {
-            frameView.getGlobalVisibleRect(frame);
-        }
-        Log.d("--->", "=============================================");
-        Log.d("--->", "screenWidth:" + screenWidth + " screenHeight:" + screenHeight);
-        Log.d("--->", "frame1:" + frame.toString());
-        show(anchor, frame, touchPoint);
-    }
-
-    public void show(View anchor, Point point) {
-        show(anchor, null, point);
-    }
-
-    public void show(View anchor, Rect frame) {
-        show(anchor, frame, null);
-    }
-
     public void show(View anchor, Rect frame, Point point) {
-        if (frame == null) frame = new Rect();
-        if (point == null) point = new Point(-1, -1);
+        if (frame == null) {
+            frame = new Rect();
+        }
+        if (point == null) {
+            point = new Point(-1, -1);
+        }
 
         int[] location = reviseFrameAndPoint(anchor, frame, point);
         int x = location[0];
@@ -114,7 +66,8 @@ public class PopupMenuWindow extends PopupWindow {
         int contentHeight = getContentHeight();
         Point offset = getOffset(frame, point, x, y, anchorWidth, anchorHeight, contentWidth, contentHeight);
 
-        Log.d("--->", "frame2:" + frame.toString());
+        Log.d("--->", "screenWidth:" + screenWidth + " screenHeight:" + screenHeight);
+        Log.d("--->", "frame:" + frame.toString());
         Log.d("--->", "point:" + point.toString());
         Log.d("--->", "x:" + x + " y:" + y);
         Log.d("--->", "anchorWidth:" + anchorWidth + " anchorHeight:" + anchorHeight);
@@ -165,7 +118,7 @@ public class PopupMenuWindow extends PopupWindow {
             offX = (screenWidth - contentWidth) / 2;
         }
 
-        if (topMargin > screenHeight * 2 / 3 || screenHeight - topMargin - contentHeight - 2 * MARGIN < 0) {
+        if (topMargin > screenHeight / 3 || screenHeight - topMargin - contentHeight - 2 * MARGIN < 0) {
             offY = topMargin - y - anchorHeight - contentHeight - MARGIN;
         } else {
             offY = topMargin - y - anchorHeight;

@@ -13,6 +13,7 @@ import com.sunfusheng.GroupRecyclerViewAdapter;
 import com.sunfusheng.dialog.adapter.StringGroupAdapter;
 import com.sunfusheng.dialog.datasource.DataSource;
 import com.sunfusheng.dialog.popupmenu.PopupMenu;
+import com.sunfusheng.dialog.popupmenu.PopupMenuGestureDetector;
 import com.sunfusheng.dialog.popupmenu.PopupMenuItem;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 public class PopupMenuActivity extends AppCompatActivity {
 
+    private PopupMenuGestureDetector popupMenuGestureDetector;
     private PopupMenu popupMenu;
     private List<PopupMenuItem> items = new ArrayList<>();
     private PopupMenuItem moreItem = new PopupMenuItem("更多", R.mipmap.ic_popup_menu_more);
@@ -35,11 +37,11 @@ public class PopupMenuActivity extends AppCompatActivity {
         items.add(new PopupMenuItem("收藏", R.mipmap.ic_popup_menu_favorite));
         items.add(new PopupMenuItem("扬声器播放", R.mipmap.ic_popup_menu_speaker));
         items.add(new PopupMenuItem("听筒播放", R.mipmap.ic_popup_menu_earphone));
-//        items.add(new PopupMenuItem("删除", R.mipmap.ic_popup_menu_delete));
-//        items.add(new PopupMenuItem("静音播放", R.mipmap.ic_popup_menu_mute));
-//        items.add(new PopupMenuItem("撤回", R.mipmap.ic_popup_menu_undo));
-//        items.add(new PopupMenuItem("强制撤回", R.mipmap.ic_popup_menu_force_undo));
-//        items.add(new PopupMenuItem("多选", R.mipmap.ic_popup_menu_multi_select));
+        items.add(new PopupMenuItem("删除", R.mipmap.ic_popup_menu_delete));
+        items.add(new PopupMenuItem("静音播放", R.mipmap.ic_popup_menu_mute));
+        items.add(new PopupMenuItem("撤回", R.mipmap.ic_popup_menu_undo));
+        items.add(new PopupMenuItem("强制撤回", R.mipmap.ic_popup_menu_force_undo));
+        items.add(new PopupMenuItem("多选", R.mipmap.ic_popup_menu_multi_select));
         return items;
     }
 
@@ -70,9 +72,11 @@ public class PopupMenuActivity extends AppCompatActivity {
             if (null != data) {
                 int position = getPosition(adapter, groupPosition, childPosition);
                 View itemView = linearLayoutManager.findViewByPosition(position);
-                showPopupMenu(recyclerView, itemView, items);
+                showPopupMenu(itemView, items);
             }
         });
+
+        popupMenuGestureDetector = new PopupMenuGestureDetector(this, recyclerView);
     }
 
     private int getPosition(GroupRecyclerViewAdapter adapter, int groupPosition, int childPosition) {
@@ -84,13 +88,8 @@ public class PopupMenuActivity extends AppCompatActivity {
         return position;
     }
 
-    private void showPopupMenu(View frameView, View anchorView, List<PopupMenuItem> items) {
-        if (popupMenu == null) {
-            popupMenu = new PopupMenu(this);
-            popupMenu.setFrameView(frameView);
-        }
-        popupMenu.setMoreItem(moreItem);
-        popupMenu.setItems(items);
+    private void showPopupMenu(View anchorView, List<PopupMenuItem> items) {
+        popupMenu = new PopupMenu(this, popupMenuGestureDetector, items);
         popupMenu.show(anchorView);
     }
 

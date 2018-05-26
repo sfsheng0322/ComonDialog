@@ -1,6 +1,7 @@
 package com.sunfusheng.dialog.popupmenu;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,24 +25,20 @@ public class PopupMenu extends PopupMenuWindow {
     private View vDivider;
     private ImageView vClose;
 
-    private static int THRESHOLD = 4;
+    public static int THRESHOLD = 4;
 
+    private PopupMenuGestureDetector popupMenuGestureDetector;
     private PopupMenuAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private List<PopupMenuItem> items = new ArrayList<>();
-    private PopupMenuItem moreItem;
     private int itemsCount;
     private boolean showMore;
 
-    public PopupMenu(Context context) {
-        this(context, null, new ArrayList<>());
-    }
-
-    public PopupMenu(Context context, View frameView, List<PopupMenuItem> items) {
+    public PopupMenu(Context context, PopupMenuGestureDetector popupMenuGestureDetector, List<PopupMenuItem> items) {
         super(context);
+        this.popupMenuGestureDetector = popupMenuGestureDetector;
         vView = inflater.inflate(R.layout.layout_popup_menu, null);
         setContentView(vView);
-        setFrameView(frameView);
 
         vRecyclerView = vView.findViewById(R.id.recyclerView);
         adapter = new PopupMenuAdapter(context, items);
@@ -64,10 +61,6 @@ public class PopupMenu extends PopupMenuWindow {
         setItems(items);
     }
 
-    public void setThreshold(int threshold) {
-        PopupMenu.THRESHOLD = threshold;
-    }
-
     public void setItems(List<PopupMenuItem> items) {
         if (items == null || items.size() == 0) {
             return;
@@ -85,16 +78,12 @@ public class PopupMenu extends PopupMenuWindow {
         adapter.setItems(handlePopupMenuItems(showMore));
     }
 
-    public void setMoreItem(PopupMenuItem moreItem) {
-        this.moreItem = moreItem;
-    }
-
     private int getSpanCount() {
         return showMore ? THRESHOLD : itemsCount;
     }
 
     private List<PopupMenuItem> handlePopupMenuItems(boolean showMore) {
-        if (showMore && moreItem != null) {
+        if (showMore) {
             List<PopupMenuItem> result = new ArrayList<>();
             for (int i = 0; i < THRESHOLD; i++) {
                 result.add(items.get(i));
@@ -102,5 +91,15 @@ public class PopupMenu extends PopupMenuWindow {
             return result;
         }
         return items;
+    }
+
+    public void show(View anchorView) {
+        if (popupMenuGestureDetector == null) {
+            throw new RuntimeException("popupMenuGestureDetector is null, please init first.");
+        }
+
+        Rect frameRect = new Rect();
+        popupMenuGestureDetector.getFrameView().getGlobalVisibleRect(frameRect);
+        show(anchorView, frameRect, popupMenuGestureDetector.getTouchPoint());
     }
 }
