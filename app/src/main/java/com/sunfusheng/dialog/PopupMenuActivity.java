@@ -38,10 +38,10 @@ public class PopupMenuActivity extends AppCompatActivity {
         items.add(new PopupMenuItem("扬声器播放", R.mipmap.ic_popup_menu_speaker));
         items.add(new PopupMenuItem("听筒播放", R.mipmap.ic_popup_menu_earphone));
         items.add(new PopupMenuItem("删除", R.mipmap.ic_popup_menu_delete));
-        items.add(new PopupMenuItem("静音播放", R.mipmap.ic_popup_menu_mute));
-        items.add(new PopupMenuItem("撤回", R.mipmap.ic_popup_menu_undo));
-        items.add(new PopupMenuItem("强制撤回", R.mipmap.ic_popup_menu_force_undo));
-        items.add(new PopupMenuItem("多选", R.mipmap.ic_popup_menu_multi_select));
+//        items.add(new PopupMenuItem("静音播放", R.mipmap.ic_popup_menu_mute));
+//        items.add(new PopupMenuItem("撤回", R.mipmap.ic_popup_menu_undo));
+//        items.add(new PopupMenuItem("强制撤回", R.mipmap.ic_popup_menu_force_undo));
+//        items.add(new PopupMenuItem("多选", R.mipmap.ic_popup_menu_multi_select));
         return items;
     }
 
@@ -62,6 +62,11 @@ public class PopupMenuActivity extends AppCompatActivity {
         setTitle(R.string.popup_menu);
 
         LinearLayout linearLayout = findViewById(R.id.linearLayout);
+//        linearLayout.setOnLongClickListener(v -> {
+//            showPopupMenu(linearLayout, items);
+//            return true;
+//        });
+
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
