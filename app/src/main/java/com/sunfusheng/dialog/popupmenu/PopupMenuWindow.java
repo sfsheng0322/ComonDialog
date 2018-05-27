@@ -35,7 +35,6 @@ public class PopupMenuWindow extends PopupWindow {
         setFocusable(true);
         setOutsideTouchable(true);
 
-
         MARGIN = DisplayUtil.dp2px(context, 16);
         screenWidth = DisplayUtil.getScreenWidth(context);
         screenHeight = DisplayUtil.getScreenHeight(context);

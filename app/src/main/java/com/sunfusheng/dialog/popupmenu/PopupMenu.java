@@ -1,6 +1,7 @@
 package com.sunfusheng.dialog.popupmenu;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,6 +40,7 @@ public class PopupMenu extends PopupMenuWindow {
         this.popupMenuGestureDetector = popupMenuGestureDetector;
         vView = inflater.inflate(R.layout.layout_popup_menu, null);
         setContentView(vView);
+        vView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
         vRecyclerView = vView.findViewById(R.id.recyclerView);
         adapter = new PopupMenuAdapter(context, items);
@@ -46,6 +48,7 @@ public class PopupMenu extends PopupMenuWindow {
 
         adapter.setOnItemClickListener((view, item, position) -> {
             Toast.makeText(view.getContext(), item.title, Toast.LENGTH_SHORT).show();
+            dismiss();
         });
         vMore = vView.findViewById(R.id.ll_more);
         vDivider = vView.findViewById(R.id.divider);
@@ -100,6 +103,7 @@ public class PopupMenu extends PopupMenuWindow {
 
         Rect frameRect = new Rect();
         popupMenuGestureDetector.getFrameView().getGlobalVisibleRect(frameRect);
-        show(anchorView, frameRect, popupMenuGestureDetector.getTouchPoint());
+        Point touchPoint = popupMenuGestureDetector.getTouchPoint();
+        show(anchorView, frameRect, touchPoint);
     }
 }
