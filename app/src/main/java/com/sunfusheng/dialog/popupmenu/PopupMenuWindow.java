@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 import com.sunfusheng.dialog.R;
-import com.sunfusheng.dialog.util.DisplayUtil;
+import com.sunfusheng.dialog.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class PopupMenuWindow extends PopupWindow {
     protected Context context;
     protected LayoutInflater inflater;
 
-    protected List<PopupMenuItem> items = new ArrayList<>();
+    protected List<PopupMenuItemConfig> items = new ArrayList<>();
     protected int itemsCount;
     protected boolean showMore;
 
@@ -46,11 +46,11 @@ public class PopupMenuWindow extends PopupWindow {
         setFocusable(true);
         setOutsideTouchable(true);
 
-        MARGIN = DisplayUtil.dp2px(context, 16);
-        screenWidth = DisplayUtil.getScreenWidth(context);
-        screenHeight = DisplayUtil.getScreenHeight(context);
-        itemWidth = DisplayUtil.dp2px(context, 56);
-        itemHeight = DisplayUtil.dp2px(context, 40);
+        MARGIN = Utils.dp2px(context, 16);
+        screenWidth = Utils.getScreenWidth(context);
+        screenHeight = Utils.getScreenHeight(context);
+        itemWidth = Utils.dp2px(context, 56);
+        itemHeight = Utils.dp2px(context, 40);
     }
 
     public int getContentWidth() {
@@ -117,11 +117,11 @@ public class PopupMenuWindow extends PopupWindow {
         if (!frame.isEmpty()) {
             frame.left = Math.max(MARGIN, frame.left);
             frame.top = Math.max(MARGIN, frame.top);
-            if (DisplayUtil.getScreenWidth(context) - frame.right < MARGIN) {
-                frame.right = DisplayUtil.getScreenWidth(context) - MARGIN;
+            if (screenWidth - frame.right < MARGIN) {
+                frame.right = screenWidth - MARGIN;
             }
-            if (DisplayUtil.getScreenHeight(context) - frame.bottom < MARGIN) {
-                frame.bottom = DisplayUtil.getScreenHeight(context) - MARGIN;
+            if (screenHeight - frame.bottom < MARGIN) {
+                frame.bottom = screenHeight - MARGIN;
             }
         }
         return location;

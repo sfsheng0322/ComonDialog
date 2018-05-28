@@ -14,7 +14,7 @@ import com.sunfusheng.dialog.adapter.StringGroupAdapter;
 import com.sunfusheng.dialog.datasource.DataSource;
 import com.sunfusheng.dialog.popupmenu.PopupMenu;
 import com.sunfusheng.dialog.popupmenu.PopupMenuGestureDetector;
-import com.sunfusheng.dialog.popupmenu.PopupMenuItem;
+import com.sunfusheng.dialog.popupmenu.PopupMenuItemConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +26,22 @@ public class PopupMenuActivity extends AppCompatActivity {
 
     private PopupMenuGestureDetector popupMenuGestureDetector;
     private PopupMenu popupMenu;
-    private List<PopupMenuItem> items = new ArrayList<>();
-    private PopupMenuItem moreItem = new PopupMenuItem("更多", R.mipmap.ic_popup_menu_more);
+    private List<PopupMenuItemConfig> items = new ArrayList<>();
+    private PopupMenuItemConfig moreItem = new PopupMenuItemConfig(R.string.item_menu_more, R.mipmap.ic_popup_menu_more);
 
-    private List<PopupMenuItem> getItems() {
-        List<PopupMenuItem> items = new ArrayList<>();
-        items.add(new PopupMenuItem("转发", R.mipmap.ic_popup_menu_share));
-        items.add(new PopupMenuItem("回复", R.mipmap.ic_popup_menu_reply));
-        items.add(new PopupMenuItem("复制", R.mipmap.ic_popup_menu_copy));
-//        items.add(new PopupMenuItem("收藏", R.mipmap.ic_popup_menu_favorite));
-//        items.add(new PopupMenuItem("扬声器播放", R.mipmap.ic_popup_menu_speaker));
-//        items.add(new PopupMenuItem("听筒播放", R.mipmap.ic_popup_menu_earphone));
-//        items.add(new PopupMenuItem("删除", R.mipmap.ic_popup_menu_delete));
-//        items.add(new PopupMenuItem("静音播放", R.mipmap.ic_popup_menu_mute));
-//        items.add(new PopupMenuItem("撤回", R.mipmap.ic_popup_menu_undo));
-//        items.add(new PopupMenuItem("强制撤回", R.mipmap.ic_popup_menu_force_undo));
-//        items.add(new PopupMenuItem("多选", R.mipmap.ic_popup_menu_multi_select));
+    private List<PopupMenuItemConfig> getItems() {
+        List<PopupMenuItemConfig> items = new ArrayList<>();
+        items.add(new PopupMenuItemConfig(R.string.item_menu_share, R.mipmap.ic_popup_menu_share));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_reply, R.mipmap.ic_popup_menu_reply));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_copy, R.mipmap.ic_popup_menu_copy));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_favorite, R.mipmap.ic_popup_menu_favorite));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_speaker, R.mipmap.ic_popup_menu_speaker));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_earphone, R.mipmap.ic_popup_menu_earphone));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_delete, R.mipmap.ic_popup_menu_delete));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_mute, R.mipmap.ic_popup_menu_mute));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_undo, R.mipmap.ic_popup_menu_undo));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_force_undo, R.mipmap.ic_popup_menu_force_undo));
+        items.add(new PopupMenuItemConfig(R.string.item_menu_multi_select, R.mipmap.ic_popup_menu_multi_select));
         return items;
     }
 
@@ -93,7 +93,7 @@ public class PopupMenuActivity extends AppCompatActivity {
         return position;
     }
 
-    private void showPopupMenu(View anchorView, List<PopupMenuItem> items) {
+    private void showPopupMenu(View anchorView, List<PopupMenuItemConfig> items) {
         popupMenu = new PopupMenu(this, popupMenuGestureDetector, items);
         popupMenu.show(anchorView);
     }

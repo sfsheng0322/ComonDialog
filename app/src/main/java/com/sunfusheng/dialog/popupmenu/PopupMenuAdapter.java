@@ -20,18 +20,18 @@ import java.util.List;
 public class PopupMenuAdapter extends RecyclerView.Adapter<PopupMenuAdapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private List<PopupMenuItem> items;
+    private List<PopupMenuItemConfig> items;
 
     public PopupMenuAdapter(Context context) {
         this(context, new ArrayList<>());
     }
 
-    public PopupMenuAdapter(Context context, List<PopupMenuItem> items) {
+    public PopupMenuAdapter(Context context, List<PopupMenuItemConfig> items) {
         this.layoutInflater = LayoutInflater.from(context);
         this.items = items;
     }
 
-    public void setItems(List<PopupMenuItem> items) {
+    public void setItems(List<PopupMenuItemConfig> items) {
         this.items = items;
         notifyDataSetChanged();
     }
@@ -44,10 +44,10 @@ public class PopupMenuAdapter extends RecyclerView.Adapter<PopupMenuAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PopupMenuItem item = items.get(position);
+        PopupMenuItemConfig item = items.get(position);
 
-        holder.vTitle.setText(item.title);
-        holder.vIcon.setImageResource(item.icon);
+        holder.vTitle.setText(item.titleResId);
+        holder.vIcon.setImageResource(item.iconResId);
 
         holder.itemView.setOnClickListener(v -> {
             if (onItemClickListener != null) {
@@ -72,7 +72,7 @@ public class PopupMenuAdapter extends RecyclerView.Adapter<PopupMenuAdapter.View
         TextView vTitle;
         ImageView vIcon;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             vTitle = itemView.findViewById(R.id.title);
             vIcon = itemView.findViewById(R.id.icon);
@@ -83,11 +83,11 @@ public class PopupMenuAdapter extends RecyclerView.Adapter<PopupMenuAdapter.View
     private onItemLongClickListener onItemLongClickListener;
 
     public interface onItemClickListener {
-        void onItemClick(View view, PopupMenuItem item, int position);
+        void onItemClick(View view, PopupMenuItemConfig item, int position);
     }
 
     public interface onItemLongClickListener {
-        void onItemLongClick(View view, PopupMenuItem item, int position);
+        void onItemLongClick(View view, PopupMenuItemConfig item, int position);
     }
 
     public void setOnItemClickListener(PopupMenuAdapter.onItemClickListener onItemClickListener) {

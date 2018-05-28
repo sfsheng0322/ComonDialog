@@ -8,11 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.sunfusheng.dialog.R;
+import com.sunfusheng.dialog.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,40 +30,56 @@ public class PopupMenu extends PopupMenuWindow {
     private PopupMenuGestureDetector popupMenuGestureDetector;
     private PopupMenuAdapter adapter;
 
-    public PopupMenu(Context context, PopupMenuGestureDetector popupMenuGestureDetector, List<PopupMenuItem> items) {
+    private onMenuItemClickListener onMenuItemClickListener;
+    private onMenuMoreClickListener onMenuMoreClickListener;
+    private OnMenuCloseClickListener onMenuCloseClickListener;
+
+    public PopupMenu(Context context, PopupMenuGestureDetector popupMenuGestureDetector, List<PopupMenuItemConfig> items) {
         super(context);
         this.popupMenuGestureDetector = popupMenuGestureDetector;
         vView = inflater.inflate(R.layout.layout_popup_menu, null);
         setContentView(vView);
         vView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-
         vRecyclerView = vView.findViewById(R.id.recyclerView);
-        adapter = new PopupMenuAdapter(context, items);
-        vRecyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener((view, item, position) -> {
-            Toast.makeText(view.getContext(), item.title, Toast.LENGTH_SHORT).show();
-            dismiss();
-        });
         vMore = vView.findViewById(R.id.ll_more);
         vDivider = vView.findViewById(R.id.divider);
         vClose = vView.findViewById(R.id.close);
 
+        adapter = new PopupMenuAdapter(context, items);
+        vRecyclerView.setAdapter(adapter);
+        setItems(items);
+
+        adapter.setOnItemClickListener((view, item, position) -> {
+            if (onMenuItemClickListener != null) {
+                onMenuItemClickListener.onMenuItemClick(view, item, position);
+            }
+            dismiss();
+        });
+
         vMore.setOnClickListener(v -> {
-            showMore = false;
             vMore.setVisibility(View.GONE);
             vClose.setVisibility(View.VISIBLE);
-            adapter.setItems(handlePopupMenuItems(showMore));
+            adapter.setItems(handlePopupMenuItems(false));
+            if (onMenuMoreClickListener != null) {
+                onMenuMoreClickListener.onMenuMore(this);
+            }
         });
-        vClose.setOnClickListener(v -> dismiss());
-        setItems(items);
+
+        vClose.setOnClickListener(v -> {
+            dismiss();
+            if (onMenuCloseClickListener != null) {
+                onMenuCloseClickListener.onMenuClose(this);
+            }
+        });
     }
 
-    public void setItems(List<PopupMenuItem> items) {
-        if (items == null || items.size() == 0) {
-            return;
-        }
+    public void setItems(PopupMenuItemConfig[] items) {
+        if (Utils.isEmpty(items)) return;
+        setItems(Arrays.asList(items));
+    }
 
+    public void setItems(List<PopupMenuItemConfig> items) {
+        if (Utils.isEmpty(items)) return;
         this.items = items;
         this.itemsCount = items.size();
         this.showMore = itemsCount > THRESHOLD;
@@ -70,17 +87,13 @@ public class PopupMenu extends PopupMenuWindow {
         vDivider.setVisibility(itemsCount > THRESHOLD ? View.VISIBLE : View.GONE);
         vClose.setVisibility(View.GONE);
 
-        vRecyclerView.setLayoutManager(new GridLayoutManager(context, getSpanCount()));
+        vRecyclerView.setLayoutManager(new GridLayoutManager(context, showMore ? THRESHOLD : itemsCount));
         adapter.setItems(handlePopupMenuItems(showMore));
     }
 
-    private int getSpanCount() {
-        return showMore ? THRESHOLD : itemsCount;
-    }
-
-    private List<PopupMenuItem> handlePopupMenuItems(boolean showMore) {
+    private List<PopupMenuItemConfig> handlePopupMenuItems(boolean showMore) {
         if (showMore) {
-            List<PopupMenuItem> result = new ArrayList<>();
+            List<PopupMenuItemConfig> result = new ArrayList<>();
             for (int i = 0; i < THRESHOLD; i++) {
                 result.add(items.get(i));
             }
@@ -90,13 +103,33 @@ public class PopupMenu extends PopupMenuWindow {
     }
 
     public void show(View anchorView) {
-        if (popupMenuGestureDetector == null) {
-            throw new RuntimeException("popupMenuGestureDetector is null, please init first.");
-        }
-
         Rect frameRect = new Rect();
         popupMenuGestureDetector.getFrameView().getGlobalVisibleRect(frameRect);
         Point touchPoint = popupMenuGestureDetector.getTouchPoint();
         show(anchorView, frameRect, touchPoint);
+    }
+
+    public interface onMenuItemClickListener {
+        void onMenuItemClick(View view, PopupMenuItemConfig item, int position);
+    }
+
+    public interface onMenuMoreClickListener {
+        void onMenuMore(PopupMenu popupMenu);
+    }
+
+    public interface OnMenuCloseClickListener {
+        void onMenuClose(PopupMenu popupMenu);
+    }
+
+    public void setOnItemClickListener(onMenuItemClickListener onMenuItemClickListener) {
+        this.onMenuItemClickListener = onMenuItemClickListener;
+    }
+
+    public void setOnMenuMoreClickListener(onMenuMoreClickListener onMenuMoreClickListener) {
+        this.onMenuMoreClickListener = onMenuMoreClickListener;
+    }
+
+    public void setOnMenuCloseClickListener(OnMenuCloseClickListener onMenuCloseClickListener) {
+        this.onMenuCloseClickListener = onMenuCloseClickListener;
     }
 }
