@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
+import com.sunfusheng.dialog.R;
 import com.sunfusheng.dialog.util.DisplayUtil;
 
 /**
@@ -119,8 +120,10 @@ public class PopupMenuWindow extends PopupWindow {
 
         if (topMargin > screenHeight / 3 || screenHeight - topMargin - contentHeight - 2 * MARGIN < 0) {
             offY = topMargin - y - anchorHeight - contentHeight - MARGIN;
+            setAnimationStyle(R.style.animPopupMenuBottomLeft);
         } else {
             offY = topMargin - y - anchorHeight;
+            setAnimationStyle(R.style.animPopupMenuTopLeft);
         }
 
         offset.x = offX;
