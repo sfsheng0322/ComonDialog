@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,8 +49,6 @@ public class PopupMenuGestureDetector {
         @Override
         public boolean onDown(MotionEvent e) {
             touchPoint = new Point((int) e.getX(), (int) e.getY());
-            Log.d("--->", "=============================================");
-            Log.d("--->", "touchPoint:" + touchPoint.toString());
             return super.onDown(e);
         }
     };

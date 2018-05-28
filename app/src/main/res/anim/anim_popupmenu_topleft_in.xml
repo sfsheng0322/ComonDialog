@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <scale
-        android:duration="200"
+        android:duration="150"
         android:fromXScale="0.5"
         android:fromYScale="0.5"
         android:pivotX="0%"
@@ -11,7 +11,7 @@
     </scale>
 
     <alpha
-        android:duration="0"
+        android:duration="150"
         android:fromAlpha="0"
         android:toAlpha="1">
     </alpha>

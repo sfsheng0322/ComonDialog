@@ -34,10 +34,10 @@ public class PopupMenuActivity extends AppCompatActivity {
         items.add(new PopupMenuItem("转发", R.mipmap.ic_popup_menu_share));
         items.add(new PopupMenuItem("回复", R.mipmap.ic_popup_menu_reply));
         items.add(new PopupMenuItem("复制", R.mipmap.ic_popup_menu_copy));
-        items.add(new PopupMenuItem("收藏", R.mipmap.ic_popup_menu_favorite));
-        items.add(new PopupMenuItem("扬声器播放", R.mipmap.ic_popup_menu_speaker));
-        items.add(new PopupMenuItem("听筒播放", R.mipmap.ic_popup_menu_earphone));
-        items.add(new PopupMenuItem("删除", R.mipmap.ic_popup_menu_delete));
+//        items.add(new PopupMenuItem("收藏", R.mipmap.ic_popup_menu_favorite));
+//        items.add(new PopupMenuItem("扬声器播放", R.mipmap.ic_popup_menu_speaker));
+//        items.add(new PopupMenuItem("听筒播放", R.mipmap.ic_popup_menu_earphone));
+//        items.add(new PopupMenuItem("删除", R.mipmap.ic_popup_menu_delete));
 //        items.add(new PopupMenuItem("静音播放", R.mipmap.ic_popup_menu_mute));
 //        items.add(new PopupMenuItem("撤回", R.mipmap.ic_popup_menu_undo));
 //        items.add(new PopupMenuItem("强制撤回", R.mipmap.ic_popup_menu_force_undo));

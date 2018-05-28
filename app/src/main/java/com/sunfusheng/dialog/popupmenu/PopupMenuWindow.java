@@ -14,6 +14,9 @@ import android.widget.PopupWindow;
 import com.sunfusheng.dialog.R;
 import com.sunfusheng.dialog.util.DisplayUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author sunfusheng on 2018/5/24.
  */
@@ -22,9 +25,16 @@ public class PopupMenuWindow extends PopupWindow {
     protected Context context;
     protected LayoutInflater inflater;
 
-    private static int MARGIN;
-    private int screenWidth;
-    private int screenHeight;
+    protected List<PopupMenuItem> items = new ArrayList<>();
+    protected int itemsCount;
+    protected boolean showMore;
+
+    public static int THRESHOLD = 4;
+    public static int MARGIN;
+    private static int screenWidth;
+    private static int screenHeight;
+    private static int itemWidth;
+    private static int itemHeight;
 
     public PopupMenuWindow(Context context) {
         super(context);
@@ -39,14 +49,27 @@ public class PopupMenuWindow extends PopupWindow {
         MARGIN = DisplayUtil.dp2px(context, 16);
         screenWidth = DisplayUtil.getScreenWidth(context);
         screenHeight = DisplayUtil.getScreenHeight(context);
+        itemWidth = DisplayUtil.dp2px(context, 56);
+        itemHeight = DisplayUtil.dp2px(context, 40);
     }
 
     public int getContentWidth() {
-        return getContentView().getMeasuredWidth();
+        if (showMore) {
+            return THRESHOLD * itemWidth + getContentView().getMeasuredWidth();
+        }
+        return itemsCount * itemWidth;
     }
 
     public int getContentHeight() {
         return getContentView().getMeasuredHeight();
+    }
+
+    public int getMaxContentHeight() {
+        int rowCount = itemsCount / THRESHOLD + (itemsCount % THRESHOLD == 0 ? 0 : 1);
+        if (showMore) {
+            return (rowCount - 1) * itemHeight + getContentHeight();
+        }
+        return getContentHeight();
     }
 
     public void show(View anchor, Rect frame, Point point) {
@@ -64,14 +87,16 @@ public class PopupMenuWindow extends PopupWindow {
         int anchorHeight = anchor.getHeight();
         int contentWidth = getContentWidth();
         int contentHeight = getContentHeight();
-        Point offset = getOffset(frame, point, x, y, anchorWidth, anchorHeight, contentWidth, contentHeight);
+        int maxContentHeight = getMaxContentHeight();
+        Point offset = getOffset(frame, point, x, y, anchorWidth, anchorHeight, contentWidth, contentHeight, maxContentHeight);
 
+        Log.d("--->", "=============================================");
         Log.d("--->", "screenWidth:" + screenWidth + " screenHeight:" + screenHeight);
         Log.d("--->", "frame:" + frame.toString());
         Log.d("--->", "point:" + point.toString());
         Log.d("--->", "x:" + x + " y:" + y);
         Log.d("--->", "anchorWidth:" + anchorWidth + " anchorHeight:" + anchorHeight);
-        Log.d("--->", "contentWidth:" + contentWidth + " contentHeight:" + contentHeight);
+        Log.d("--->", "contentWidth:" + contentWidth + " contentHeight:" + contentHeight + " maxContentHeight:" + maxContentHeight);
         Log.d("--->", "offset:" + offset.toString());
 
         showAsDropDown(anchor, offset.x, offset.y);
@@ -102,28 +127,41 @@ public class PopupMenuWindow extends PopupWindow {
         return location;
     }
 
-    private Point getOffset(Rect frame, Point point, int x, int y, int anchorWidth, int anchorHeight, int contentWidth, int contentHeight) {
+    private Point getOffset(Rect frame, Point point, int x, int y, int anchorWidth, int anchorHeight,
+                            int contentWidth, int contentHeight, int maxContentHeight) {
         Point offset = new Point();
         int offX;
         int offY;
         int pointX = point.x;
         int pointY = point.y;
         int topMargin = frame.top + pointY;
+        boolean isLeft;
 
         if (screenWidth - pointX - contentWidth - MARGIN > 0) {
             offX = Math.max(pointX, MARGIN);
+            isLeft = true;
         } else if (pointX - contentWidth - 2 * MARGIN > 0) {
             offX = pointX - contentWidth - MARGIN;
+            isLeft = false;
         } else {
+            isLeft = true;
             offX = (screenWidth - contentWidth) / 2;
         }
 
-        if (topMargin > screenHeight / 3 || screenHeight - topMargin - contentHeight - 2 * MARGIN < 0) {
+        if (topMargin > screenHeight / 2 || screenHeight - topMargin - contentHeight - 2 * MARGIN < 0) {
             offY = topMargin - y - anchorHeight - contentHeight - MARGIN;
-            setAnimationStyle(R.style.animPopupMenuBottomLeft);
+            if (isLeft) {
+                setAnimationStyle(R.style.animPopupMenuBottomLeft);
+            } else {
+                setAnimationStyle(R.style.animPopupMenuBottomRight);
+            }
         } else {
             offY = topMargin - y - anchorHeight;
-            setAnimationStyle(R.style.animPopupMenuTopLeft);
+            if (isLeft) {
+                setAnimationStyle(R.style.animPopupMenuTopLeft);
+            } else {
+                setAnimationStyle(R.style.animPopupMenuTopRight);
+            }
         }
 
         offset.x = offX;

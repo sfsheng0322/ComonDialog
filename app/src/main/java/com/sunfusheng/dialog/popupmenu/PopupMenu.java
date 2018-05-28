@@ -26,14 +26,8 @@ public class PopupMenu extends PopupMenuWindow {
     private View vDivider;
     private ImageView vClose;
 
-    public static int THRESHOLD = 4;
-
     private PopupMenuGestureDetector popupMenuGestureDetector;
     private PopupMenuAdapter adapter;
-    private GridLayoutManager gridLayoutManager;
-    private List<PopupMenuItem> items = new ArrayList<>();
-    private int itemsCount;
-    private boolean showMore;
 
     public PopupMenu(Context context, PopupMenuGestureDetector popupMenuGestureDetector, List<PopupMenuItem> items) {
         super(context);
@@ -76,8 +70,7 @@ public class PopupMenu extends PopupMenuWindow {
         vDivider.setVisibility(itemsCount > THRESHOLD ? View.VISIBLE : View.GONE);
         vClose.setVisibility(View.GONE);
 
-        gridLayoutManager = new GridLayoutManager(context, getSpanCount());
-        vRecyclerView.setLayoutManager(gridLayoutManager);
+        vRecyclerView.setLayoutManager(new GridLayoutManager(context, getSpanCount()));
         adapter.setItems(handlePopupMenuItems(showMore));
     }
 

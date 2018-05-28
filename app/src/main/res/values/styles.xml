@@ -11,9 +11,19 @@
         <item name="android:windowExitAnimation">@anim/anim_popupmenu_topleft_out</item>
     </style>
 
+    <style name="animPopupMenuTopRight">
+        <item name="android:windowEnterAnimation">@anim/anim_popupmenu_topright_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_popupmenu_topright_out</item>
+    </style>
+
     <style name="animPopupMenuBottomLeft">
         <item name="android:windowEnterAnimation">@anim/anim_popupmenu_bottomleft_in</item>
         <item name="android:windowExitAnimation">@anim/anim_popupmenu_bottomleft_out</item>
+    </style>
+
+    <style name="animPopupMenuBottomRight">
+        <item name="android:windowEnterAnimation">@anim/anim_popupmenu_bottomright_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_popupmenu_bottomright_out</item>
     </style>
 
 </resources>
