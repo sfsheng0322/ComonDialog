@@ -27,16 +27,18 @@ public class PopupMenu extends PopupMenuWindow {
     private View vDivider;
     private ImageView vClose;
 
-    private PopupMenuGestureDetector popupMenuGestureDetector;
     private PopupMenuAdapter adapter;
 
     private onMenuItemClickListener onMenuItemClickListener;
     private onMenuMoreClickListener onMenuMoreClickListener;
     private OnMenuCloseClickListener onMenuCloseClickListener;
 
-    public PopupMenu(Context context, PopupMenuGestureDetector popupMenuGestureDetector, List<PopupMenuItemConfig> items) {
+    public PopupMenu(Context context, PopupMenuItemConfig[] items) {
+        this(context, Arrays.asList(items));
+    }
+
+    public PopupMenu(Context context, List<PopupMenuItemConfig> items) {
         super(context);
-        this.popupMenuGestureDetector = popupMenuGestureDetector;
         vView = inflater.inflate(R.layout.layout_popup_menu, null);
         setContentView(vView);
         vView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -102,11 +104,15 @@ public class PopupMenu extends PopupMenuWindow {
         return items;
     }
 
-    public void show(View anchorView) {
+    public void show(View anchorView, IPopupMenuGestureDetector gestureDetector) {
         Rect frameRect = new Rect();
-        popupMenuGestureDetector.getFrameView().getGlobalVisibleRect(frameRect);
-        Point touchPoint = popupMenuGestureDetector.getTouchPoint();
+        gestureDetector.getFrameView().getGlobalVisibleRect(frameRect);
+        Point touchPoint = gestureDetector.getTouchPoint();
         show(anchorView, frameRect, touchPoint);
+    }
+
+    public void show(View anchorView, Rect frameView, Point touchPoint) {
+        showPopupMenu(anchorView, frameView, touchPoint);
     }
 
     public interface onMenuItemClickListener {

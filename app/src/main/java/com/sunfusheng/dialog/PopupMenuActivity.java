@@ -12,6 +12,7 @@ import com.sunfusheng.GroupAdapterUtils;
 import com.sunfusheng.GroupRecyclerViewAdapter;
 import com.sunfusheng.dialog.adapter.StringGroupAdapter;
 import com.sunfusheng.dialog.datasource.DataSource;
+import com.sunfusheng.dialog.popupmenu.IPopupMenuGestureDetector;
 import com.sunfusheng.dialog.popupmenu.PopupMenu;
 import com.sunfusheng.dialog.popupmenu.PopupMenuGestureDetector;
 import com.sunfusheng.dialog.popupmenu.PopupMenuItemConfig;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public class PopupMenuActivity extends AppCompatActivity {
 
-    private PopupMenuGestureDetector popupMenuGestureDetector;
+    private IPopupMenuGestureDetector gestureDetector;
     private PopupMenu popupMenu;
     private List<PopupMenuItemConfig> items = new ArrayList<>();
     private PopupMenuItemConfig moreItem = new PopupMenuItemConfig(R.string.item_menu_more, R.mipmap.ic_popup_menu_more);
@@ -81,7 +82,7 @@ public class PopupMenuActivity extends AppCompatActivity {
             }
         });
 
-        popupMenuGestureDetector = new PopupMenuGestureDetector(this, recyclerView);
+        gestureDetector = new PopupMenuGestureDetector(recyclerView);
     }
 
     private int getPosition(GroupRecyclerViewAdapter adapter, int groupPosition, int childPosition) {
@@ -94,8 +95,8 @@ public class PopupMenuActivity extends AppCompatActivity {
     }
 
     private void showPopupMenu(View anchorView, List<PopupMenuItemConfig> items) {
-        popupMenu = new PopupMenu(this, popupMenuGestureDetector, items);
-        popupMenu.show(anchorView);
+        popupMenu = new PopupMenu(this, items);
+        popupMenu.show(anchorView, gestureDetector);
     }
 
 }

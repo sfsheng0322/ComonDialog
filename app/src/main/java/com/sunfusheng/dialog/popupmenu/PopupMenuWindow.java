@@ -53,18 +53,18 @@ public class PopupMenuWindow extends PopupWindow {
         itemHeight = Utils.dp2px(context, 40);
     }
 
-    public int getContentWidth() {
+    protected int getContentWidth() {
         if (showMore) {
             return THRESHOLD * itemWidth + getContentView().getMeasuredWidth();
         }
         return itemsCount * itemWidth;
     }
 
-    public int getContentHeight() {
+    protected int getContentHeight() {
         return getContentView().getMeasuredHeight();
     }
 
-    public int getMaxContentHeight() {
+    protected int getMaxContentHeight() {
         int rowCount = itemsCount / THRESHOLD + (itemsCount % THRESHOLD == 0 ? 0 : 1);
         if (showMore) {
             return (rowCount - 1) * itemHeight + getContentHeight();
@@ -72,7 +72,7 @@ public class PopupMenuWindow extends PopupWindow {
         return getContentHeight();
     }
 
-    public void show(View anchor, Rect frame, Point point) {
+    protected void showPopupMenu(View anchor, Rect frame, Point point) {
         if (frame == null) {
             frame = new Rect();
         }
@@ -102,7 +102,7 @@ public class PopupMenuWindow extends PopupWindow {
         showAsDropDown(anchor, offset.x, offset.y);
     }
 
-    public int[] reviseFrameAndPoint(View anchor, Rect frame, Point point) {
+    protected int[] reviseFrameAndPoint(View anchor, Rect frame, Point point) {
         int[] location = new int[2];
         anchor.getLocationInWindow(location);
 
@@ -127,7 +127,7 @@ public class PopupMenuWindow extends PopupWindow {
         return location;
     }
 
-    private Point getOffset(Rect frame, Point point, int x, int y, int anchorWidth, int anchorHeight,
+    protected Point getOffset(Rect frame, Point point, int x, int y, int anchorWidth, int anchorHeight,
                             int contentWidth, int contentHeight, int maxContentHeight) {
         Point offset = new Point();
         int offX;
@@ -144,7 +144,7 @@ public class PopupMenuWindow extends PopupWindow {
             offX = pointX - contentWidth - MARGIN;
             isLeft = false;
         } else {
-            isLeft = true;
+            isLeft = pointX - screenWidth / 2 < 0;
             offX = (screenWidth - contentWidth) / 2;
         }
 
