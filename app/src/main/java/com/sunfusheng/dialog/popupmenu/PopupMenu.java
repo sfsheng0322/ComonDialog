@@ -105,10 +105,10 @@ public class PopupMenu extends PopupMenuWindow {
     }
 
     public void show(View anchorView, IPopupMenuGestureDetector gestureDetector) {
+        if (gestureDetector == null || gestureDetector.getFrameView() == null) return;
         Rect frameRect = new Rect();
         gestureDetector.getFrameView().getGlobalVisibleRect(frameRect);
-        Point touchPoint = gestureDetector.getTouchPoint();
-        show(anchorView, frameRect, touchPoint);
+        show(anchorView, frameRect, gestureDetector.getTouchPoint());
     }
 
     public void show(View anchorView, Rect frameView, Point touchPoint) {

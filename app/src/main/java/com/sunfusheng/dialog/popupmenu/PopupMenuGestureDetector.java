@@ -62,4 +62,12 @@ public class PopupMenuGestureDetector implements IPopupMenuGestureDetector {
     public Point getTouchPoint() {
         return touchPoint;
     }
+
+    public void setFrameView(View frameView) {
+        this.frameView = frameView;
+    }
+
+    public void setTouchPoint(Point touchPoint) {
+        this.touchPoint = touchPoint;
+    }
 }
