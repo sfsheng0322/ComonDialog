@@ -128,7 +128,7 @@ public class PopupMenuWindow extends PopupWindow {
     }
 
     protected Point getOffset(Rect frame, Point point, int x, int y, int anchorWidth, int anchorHeight,
-                            int contentWidth, int contentHeight, int maxContentHeight) {
+                              int contentWidth, int contentHeight, int maxContentHeight) {
         Point offset = new Point();
         int offX;
         int offY;
