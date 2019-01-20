@@ -1,5 +1,6 @@
 package com.sunfusheng.dialog.datasource;
 
+import com.sunfusheng.dialog.CommonPopupActivity;
 import com.sunfusheng.dialog.PopupMenuActivity;
 import com.sunfusheng.dialog.R;
 
@@ -10,10 +11,8 @@ public class DataSource {
 
     public enum MainItemConfig {
         NULL(0, null),
-        TOAST(R.string.toast, null),
-        DIALOG(R.string.dialog, null),
-        BOTTOM_SHEET(R.string.bottom_sheet, null),
-        POPUP_MENU(R.string.popup_menu, PopupMenuActivity.class);
+        POPUP_MENU(R.string.popup_menu, PopupMenuActivity.class),
+        COMMON_POPUP(R.string.common_menu, CommonPopupActivity.class);
 
         public int titleId;
         public Class<?> intentClass;
@@ -29,8 +28,7 @@ public class DataSource {
     }
 
     public static MainItemConfig[][] mainItems = {
-            {MainItemConfig.NULL, MainItemConfig.TOAST, MainItemConfig.DIALOG},
-            {MainItemConfig.NULL, MainItemConfig.BOTTOM_SHEET, MainItemConfig.POPUP_MENU}
+            {MainItemConfig.NULL, MainItemConfig.POPUP_MENU, MainItemConfig.COMMON_POPUP}
     };
 
     public static String[][] popupMenuItems = {

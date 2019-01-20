@@ -4,6 +4,7 @@
     <string name="dialog">Dialog</string>
     <string name="bottom_sheet">Bottom Sheet</string>
     <string name="popup_menu">Popup Menu</string>
+    <string name="common_menu">Common Popup</string>
 
     <string name="item_menu_share">转发</string>
     <string name="item_menu_reply">回复</string>
