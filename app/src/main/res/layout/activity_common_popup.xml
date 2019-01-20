@@ -4,13 +4,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <com.sunfusheng.dialog.common_popup.TriangleView
-        android:layout_width="50dp"
-        android:layout_height="30dp"
-        android:layout_margin="16dp"
-        app:trv_color="@color/colorPrimary"
-        app:trv_direction="left"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_popup_drawable">
+
+        </RelativeLayout>
+
+        <com.sunfusheng.dialog.common_popup.RadiusTriangleView
+            android:layout_width="10dp"
+            android:layout_height="16dp"
+            app:rtv_color="@color/bg_popup_color"
+            app:rtv_direction="right"
+            app:rtv_radius="5dp"/>
+    </LinearLayout>
 
 </LinearLayout>
