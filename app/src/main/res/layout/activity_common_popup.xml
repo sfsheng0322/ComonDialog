@@ -8,25 +8,26 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_popup_drawable">
-
-        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="60dp">
 
         <com.sunfusheng.dialog.common_popup.RadiusTriangleView
-            android:layout_width="10dp"
-            android:layout_height="16dp"
+            android:id="@+id/rtv"
+            android:layout_width="16dp"
+            android:layout_height="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
             app:rtv_color="@color/bg_popup_color"
-            app:rtv_direction="right"
+            app:rtv_direction="top"
             app:rtv_radius="5dp"/>
-    </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/rtv"
+            android:background="@drawable/bg_popup_drawable"/>
+    </RelativeLayout>
 
 </LinearLayout>
