@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,24 +9,34 @@
 
     <RelativeLayout
         android:layout_width="150dp"
-        android:layout_height="60dp">
+        android:layout_height="wrap_content">
 
         <com.sunfusheng.dialog.common_popup.RadiusTriangleView
             android:id="@+id/rtv"
-            android:layout_width="16dp"
-            android:layout_height="10dp"
+            android:layout_width="12dp"
+            android:layout_height="6dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             app:rtv_color="@color/bg_popup_color"
             app:rtv_direction="top"
-            app:rtv_radius="5dp"/>
+            app:rtv_radius="3dp" />
 
         <RelativeLayout
             android:id="@+id/content"
             android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/rtv"
-            android:background="@drawable/bg_popup_drawable"/>
+            android:background="@drawable/bg_popup_drawable">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                android:text="点击查看具体信息"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </LinearLayout>
